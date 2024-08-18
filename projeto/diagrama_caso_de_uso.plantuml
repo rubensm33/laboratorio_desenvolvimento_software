@@ -1,0 +1,32 @@
+@startuml
+actor "Aluno" as Aluno
+actor "Professor" as Professor
+actor "Secretaria" as Secretaria
+
+rectangle "Sistema de Matrículas" {
+    usecase "Efetuar Matrícula" as EfetuarMatricula
+    usecase "Cancelar Matrícula" as CancelarMatricula
+    usecase "Consultar Disciplinas" as ConsultarDisciplinas
+    usecase "Gerar Currículo" as GerarCurriculo
+    usecase "Manter Disciplinas" as ManterDisciplinas
+    usecase "Manter Professores" as ManterProfessores
+    usecase "Manter Alunos" as ManterAlunos
+    usecase "Notificar Sistema de Cobranças" as NotificarSistemaDeCobrancas
+    usecase "Consultar Alunos Matriculados" as ConsultarAlunosMatriculados
+}
+
+Aluno --> EfetuarMatricula
+Aluno --> CancelarMatricula
+Aluno --> ConsultarDisciplinas
+
+Professor --> ConsultarAlunosMatriculados
+
+Secretaria --> GerarCurriculo
+Secretaria --> ManterDisciplinas
+Secretaria --> ManterProfessores
+Secretaria --> ManterAlunos
+
+EfetuarMatricula --> NotificarSistemaDeCobrancas
+
+
+@enduml
