@@ -18,3 +18,15 @@ rectangle "Sistema de Matrículas" {
 Aluno --> EfetuarMatricula
 Aluno --> CancelarMatricula
 Aluno --> ConsultarDisciplinas
+
+Professor --> ConsultarAlunosMatriculados
+
+Secretaria --> GerarCurriculo
+Secretaria --> ManterDisciplinas
+Secretaria --> ManterProfessores
+Secretaria --> ManterAlunos
+
+EfetuarMatricula --> NotificarSistemaDeCobrancas
+
+
+@enduml
