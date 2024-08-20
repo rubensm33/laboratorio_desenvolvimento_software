@@ -1,4 +1,6 @@
 @startuml
+left to right direction
+
 actor "Aluno" as Aluno
 actor "Professor" as Professor
 actor "Secretaria" as Secretaria
@@ -16,7 +18,6 @@ rectangle "Sistema de Matrículas" {
 }
 
 Aluno --> EfetuarMatricula
-Aluno --> CancelarMatricula
 Aluno --> ConsultarDisciplinas
 
 Professor --> ConsultarAlunosMatriculados
@@ -26,7 +27,8 @@ Secretaria --> ManterDisciplinas
 Secretaria --> ManterProfessores
 Secretaria --> ManterAlunos
 
-EfetuarMatricula --> NotificarSistemaDeCobrancas
+EfetuarMatricula --> NotificarSistemaDeCobrancas : <<extend>>
 
+ConsultarDisciplinas -down-> CancelarMatricula : <<include>>
 
 @enduml
