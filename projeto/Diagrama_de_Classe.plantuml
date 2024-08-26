@@ -1,70 +1,64 @@
 @startuml
+package "com.matriculas.services" {
 
-class Universidade {
-    -nome: String
-    +gerarCurriculo(): void
+    class Usuario {
+        - String nome
+        - String login
+        - String senha
+    }
+
+    class Aluno extends Usuario {
+        - String matricula
+        - ArrayList<Disciplina> disciplinasInscritas
+        + matricularDisciplina(Disciplina disciplina)
+        + cancelarDisciplina(Disciplina disciplina)
+        + consultarDisciplina(Disciplina disciplina)
+        + pagarCobranca()
+    }
+
+    class Professor extends Usuario {
+        - String matricula
+        - ArrayList<Disciplina> disciplinasLecionadas
+        + consultarAlunosMatriculados(): ArrayList<Aluno>
+    }
+
+    class Secretaria extends Usuario {
+        + gerarCurriculo()
+        + manterDisciplina()
+        + manterProfessor()
+        + manterAluno()
+    }
+
+    class Curso {
+        - String nome
+        - Integer creditos
+        - ArrayList<Disciplina> disciplinasCurso
+        + adicionarDisciplina(Disciplina disciplina)
+    }
+
+    class Disciplina {
+        - String nome
+        - Integer creditos
+        - Integer maximoAlunos = 60
+        - Integer minimoAlunos = 3
+        - TipoDisciplina tipoDisciplina
+        + verificarStatus()
+        + cancelarDisciplina()
+    }
+
+    enum TipoDisciplina {
+        OBRIGATORIA, OPTATIVA
+    }
+
+    class Universidade {
+        - String nome
+        - ArrayList<Curso> cursosUniversidade
+    }
+
+    Universidade "1" --> "0..*" Curso
+    Curso "1" --> "0..*" Disciplina
+    Disciplina "0..*" --> "1" Aluno : inscrito
+    Disciplina "0..*" --> "1" Professor : leciona
 }
-
-class Curso {
-    -nome: String
-    -creditos: int
-    +adicionarDisciplina(d: Disciplina): void
-}
-
-class Disciplina {
-    -nome: String
-    -creditos: int
-    -vagas: int
-    -alunosInscritos: int
-    +matricularAluno(a: Aluno): void
-    +cancelarDisciplina(): void
-}
-
-class Aluno {
-    -nome: String
-    -matriculas: List<Disciplina>
-    +matricular(d: Disciplina): void
-    +cancelarMatricula(d: Disciplina): void
-}
-
-class Professor {
-    -nome: String
-    -disciplinas: List<Disciplina>
-    +visualizarAlunos(d: Disciplina): void
-}
-
-class Secretaria {
-    +gerarCurriculo(): void
-    +manterInformacoes(): void
-}
-
-class SistemaDeMatriculas {
-    +matricularAluno(a: Aluno, d: Disciplina): void
-    +cancelarMatricula(a: Aluno, d: Disciplina): void
-    +fecharPeriodoDeMatriculas(): void
-}
-
-class SistemaDeCobrancas {
-    +notificarAluno(a: Aluno, valor: double): void
-}
-
-class Usuario {
-    -login: String
-    -senha: String
-    +validarLogin(): bool
-}
-
-Universidade "1" -- "1" Secretaria
-Universidade "1" -- "0..*" Curso
-Curso "1" -- "0..*" Disciplina
-Disciplina "1" -- "0..*" Aluno
-Disciplina "1" -- "1" Professor
-Aluno "1" -- "0..*" Disciplina
-Professor "1" -- "0..*" Disciplina
-Secretaria "1" -- "1" SistemaDeMatriculas
-SistemaDeMatriculas -- SistemaDeCobrancas
-Usuario <|-- Aluno
-Usuario <|-- Professor
-Usuario <|-- Secretaria
 
 @enduml
