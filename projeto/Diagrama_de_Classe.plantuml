@@ -1,6 +1,34 @@
 @startuml
 package "com.matriculas.services" {
 
+    class Curso {
+        - String nome
+        - Integer creditos
+        - ArrayList<Disciplina> disciplinasCurso
+        + adicionarDisciplina(Disciplina disciplina)
+    }
+
+    class Disciplina {
+        - String nome
+        - Integer creditos
+        - Integer maximoAlunos = 60
+        - Integer minimoAlunos = 3
+        - TipoDisciplina tipoDisciplina
+        + verificarStatus()
+        + cancelarDisciplina()
+    }
+
+    class TurmaOfertada {
+        - Disciplina disciplina
+        - Professor professor
+        - ArrayList<Aluno> alunosInscritos
+        - Status status
+        + verificarStatus(): Status
+        + adicionarAluno(Aluno aluno)
+        + removerAluno(Aluno aluno)
+        + encerrarTurma()
+    }
+    
     class Usuario {
         - String nome
         - String login
@@ -29,36 +57,18 @@ package "com.matriculas.services" {
         + manterAluno()
     }
 
-    class Curso {
-        - String nome
-        - Integer creditos
-        - ArrayList<Disciplina> disciplinasCurso
-        + adicionarDisciplina(Disciplina disciplina)
-    }
-
-    class Disciplina {
-        - String nome
-        - Integer creditos
-        - Integer maximoAlunos = 60
-        - Integer minimoAlunos = 3
-        - TipoDisciplina tipoDisciplina
-        + verificarStatus()
-        + cancelarDisciplina()
-    }
-
     enum TipoDisciplina {
         OBRIGATORIA, OPTATIVA
     }
 
-    class Universidade {
-        - String nome
-        - ArrayList<Curso> cursosUniversidade
+    enum Status {
+        ATIVA, INATIVA, ENCERRADA, CONCLUIDA
     }
-
-    Universidade "1" --> "0..*" Curso
     Curso "1" --> "0..*" Disciplina
-    Disciplina "0..*" --> "1" Aluno : inscrito
-    Disciplina "0..*" --> "1" Professor : leciona
-}
 
+    TurmaOfertada "1" --> "1" Disciplina
+    TurmaOfertada "1" --> "1" Professor
+    TurmaOfertada "0..*" --> "0..*" Aluno : inscritos
+
+}
 @enduml
