@@ -23,7 +23,8 @@ public class Aluno {
     @Column(name = "senha", nullable = false)
     private String senha;
 
-    @OneToMany
-    @JoinColumn(name = "disciplina__id", nullable = true)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "aluno_disciplina", joinColumns = @JoinColumn(name = "aluno_matricula", referencedColumnName = "matricula"), inverseJoinColumns = @JoinColumn(name = "disciplina__id", referencedColumnName = "_id"))
     private List<Disciplina> disciplinasInscritas;
+
 }

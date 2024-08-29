@@ -2,6 +2,7 @@ package com.sistema_matriculas.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors; // Importação correta para Collectors
 
 import org.springframework.stereotype.Service;
 
@@ -20,19 +21,28 @@ public class AlunoService {
 
     public List<AlunoResponse> getAllAlunos() {
         List<Aluno> allAlunos = alunoRepository.findAll();
-        List<AlunoResponse> alunoResponse = new ArrayList<>();
+        List<AlunoResponse> alunoResponses = new ArrayList<>();
         for (Aluno aluno : allAlunos) {
-            alunoResponse.add(toAlunoResponse(aluno));
+            alunoResponses.add(toAlunoResponse(aluno));
         }
-        return alunoResponse;
+        return alunoResponses;
     }
 
     private AlunoResponse toAlunoResponse(Aluno aluno) {
-        List<DisciplinaResponse> disciplina = DisciplinaResponse.toDisciplinaResponse(aluno.getDisciplinasInscritas());
+        List<DisciplinaResponse> disciplinaResponses = aluno.getDisciplinasInscritas().stream()
+            .map(disciplina -> new DisciplinaResponse(
+                    disciplina.getId(),
+                    disciplina.getNome(),
+                    disciplina.getCreditos(),
+                    disciplina.getMaxAlunos(),
+                    disciplina.getMinAlunos(),
+                    disciplina.getTipoDisciplina()))
+            .collect(Collectors.toList());
+        System.out.println(disciplinaResponses);
         return new AlunoResponse(
                 aluno.getMatricula(),
                 aluno.getNome(),
                 aluno.getSenha(),
-                disciplina);
+                disciplinaResponses);
     }
 }

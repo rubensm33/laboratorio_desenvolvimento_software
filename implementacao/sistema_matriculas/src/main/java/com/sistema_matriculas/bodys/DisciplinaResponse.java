@@ -10,8 +10,8 @@ public record DisciplinaResponse(
         String id,
         String nome,
         Integer creditos,
-        Integer maximoAlunos,
-        Integer minimoAlunos,
+        Integer maxAlunos,
+        Integer minAlunos,
         TipoDisciplina tipoDisciplina) {
 
     public static List<DisciplinaResponse> toDisciplinaResponse(List<Disciplina> disciplinas) {
