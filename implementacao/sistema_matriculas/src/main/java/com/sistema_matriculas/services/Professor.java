@@ -1,4 +1,4 @@
-package com.matriculas.services;
+/*package com.sistema_matriculas.services;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,8 @@ public class Professor extends Usuario {
         this.matricula = matricula;
     }
 
-    public ArrayList<Aluno> consultarAlunosMatriculados() {
+    public ArrayList<AlunoService> consultarAlunosMatriculados() {
 
     }
 }
+*/ 

@@ -1,4 +1,4 @@
-package com.matriculas.services;
+/*package com.sistema_matriculas.services;
 
 public class Disciplina {
     private String nome;
@@ -21,3 +21,4 @@ public class Disciplina {
 
     }
 }
+*/
