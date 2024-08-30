@@ -5,11 +5,16 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sistema_matriculas.services.AlunoService;
 import com.sistema_matriculas.bodys.AlunoResponse;
+import com.sistema_matriculas.model.Aluno;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -29,5 +34,13 @@ public class AlunoController {
     public ResponseEntity<List<AlunoResponse>> getAllAlunos() {
         List<AlunoResponse> alunos = alunoService.getAllAlunos();
         return new ResponseEntity<>(alunos, HttpStatus.OK);
+    }
+
+    @PostMapping("/inscrever/{matricula}/disciplina")
+    public ResponseEntity<AlunoResponse> inscreverEmDisciplinaPorNome(
+            @PathVariable String matricula,
+            @RequestParam String nomeDisciplina) {
+
+        return alunoService.inscreverEmDisciplinaPorNome(matricula, nomeDisciplina);
     }
 }

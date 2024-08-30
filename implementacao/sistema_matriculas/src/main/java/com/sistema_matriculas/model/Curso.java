@@ -1,4 +1,4 @@
-package com.sistema_matriculas.model;
+/*package com.sistema_matriculas.model;
 
 import lombok.Data;
 import jakarta.persistence.*;
@@ -11,7 +11,7 @@ public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private String id;
 
     @Column(name = "nome", nullable = false)
     private String nome;
@@ -22,3 +22,4 @@ public class Curso {
     @OneToMany(mappedBy = "curso")
     private List<Disciplina> disciplinas;
 }
+*/

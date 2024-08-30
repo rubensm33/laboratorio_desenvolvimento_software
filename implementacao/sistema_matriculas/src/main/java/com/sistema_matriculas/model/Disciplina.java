@@ -33,7 +33,6 @@ public class Disciplina {
     @Column(name = "minAlunos", nullable = false)
     private Integer minAlunos;
 
-    
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_disciplina", nullable = false)
     private TipoDisciplina tipoDisciplina;
