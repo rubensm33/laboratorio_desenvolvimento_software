@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.sistema_matriculas.model.Disciplina;
-import com.sistema_matriculas.services.TipoDisciplina;
+import com.sistema_matriculas.utils.TipoDisciplina;
 
 public record DisciplinaResponse(
         String id,

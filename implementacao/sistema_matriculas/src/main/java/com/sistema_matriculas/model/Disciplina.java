@@ -7,7 +7,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sistema_matriculas.services.TipoDisciplina;
+import com.sistema_matriculas.utils.TipoDisciplina;
 
 import jakarta.persistence.*;
 
