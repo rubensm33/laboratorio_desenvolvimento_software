@@ -29,15 +29,9 @@ public class AlunoService {
     }
 
     private AlunoResponse toAlunoResponse(Aluno aluno) {
-        List<DisciplinaResponse> disciplinaResponses = aluno.getDisciplinasInscritas().stream()
-            .map(disciplina -> new DisciplinaResponse(
-                    disciplina.getId(),
-                    disciplina.getNome(),
-                    disciplina.getCreditos(),
-                    disciplina.getMaxAlunos(),
-                    disciplina.getMinAlunos(),
-                    disciplina.getTipoDisciplina()))
-            .collect(Collectors.toList());
+        List<DisciplinaResponse> disciplinaResponses = DisciplinaResponse
+                .toDisciplinaResponse(aluno.getDisciplinasInscritas());
+
         System.out.println(disciplinaResponses);
         return new AlunoResponse(
                 aluno.getMatricula(),
