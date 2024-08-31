@@ -6,14 +6,14 @@ import jakarta.persistence.*;
 
 @Data
 @Entity
-@Table(name = "aluno")
-public class Aluno extends Usuario {
+@Table(name = "professor")
+public class Professor extends Usuario {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "aluno_disciplina",
-        joinColumns = @JoinColumn(name = "aluno_matricula", referencedColumnName = "matricula"),
+        name = "professor_disciplina",
+        joinColumns = @JoinColumn(name = "professor_matricula", referencedColumnName = "matricula"),
         inverseJoinColumns = @JoinColumn(name = "disciplina_id", referencedColumnName = "_id")
     )
-    private List<Disciplina> disciplinasInscritas;
+    private List<Disciplina> disciplinasLecionadas;
 }
