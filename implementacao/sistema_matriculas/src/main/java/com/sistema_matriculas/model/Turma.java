@@ -14,7 +14,7 @@ public class Turma {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private String id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "disciplina_id", referencedColumnName = "_id")
@@ -28,7 +28,7 @@ public class Turma {
     @JoinTable(name = "turma_aluno",
                joinColumns = @JoinColumn(name = "turma_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "aluno_matricula", referencedColumnName = "matricula"))
-    private List<Aluno> alunos = new ArrayList<>();  // Inicializando aqui para evitar NullPointerException
+    private List<Aluno> alunos = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

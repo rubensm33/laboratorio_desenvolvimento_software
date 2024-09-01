@@ -15,7 +15,7 @@ public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "matricula")
-    private String matricula;
+    private Long matricula;
 
     @Column(name = "nome", nullable = false)
     private String nome;

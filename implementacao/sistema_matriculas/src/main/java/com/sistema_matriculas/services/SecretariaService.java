@@ -106,7 +106,7 @@ public class SecretariaService {
         return disciplinaRepository.save(disciplina);
     }
 
-    public ResponseEntity<String> validarTurma(String turmaId) {
+    public ResponseEntity<String> validarTurma(Long turmaId) {
         Optional<Turma> turmaOptional = turmaRepository.findById(turmaId);
         if (!turmaOptional.isPresent()) {
             return ResponseEntity.badRequest().body("Turma não encontrada!");

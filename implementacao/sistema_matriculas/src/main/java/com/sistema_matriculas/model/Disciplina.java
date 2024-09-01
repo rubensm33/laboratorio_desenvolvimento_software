@@ -19,7 +19,7 @@ public class Disciplina {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "_id")
-    private String id;
+    private Long id;
 
     @Column(name = "nome", nullable = false)
     private String nome;

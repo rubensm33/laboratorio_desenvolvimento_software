@@ -5,7 +5,7 @@ import java.util.List;
 import com.sistema_matriculas.model.Aluno;
 
 public record AlunoResponse(
-                String matricula,
+                Long matricula,
                 String nome,
                 String senha,
                 List<DisciplinaResponse> disciplinasInscritas) {

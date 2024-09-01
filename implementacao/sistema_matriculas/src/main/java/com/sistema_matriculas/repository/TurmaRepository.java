@@ -7,6 +7,6 @@ import com.sistema_matriculas.model.Turma;
 import java.util.Optional;
 
 @Repository
-public interface TurmaRepository extends JpaRepository<Turma, String> {
-    Optional<Turma> findByDisciplinaIdAndAnoAndSemestre(String disciplinaId, Integer ano, Integer semestre);
+public interface TurmaRepository extends JpaRepository<Turma, Long> {
+    Optional<Turma> findByDisciplinaIdAndAnoAndSemestre(Long long1, Integer ano, Integer semestre);
 }

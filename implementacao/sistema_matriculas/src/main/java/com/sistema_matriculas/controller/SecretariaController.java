@@ -45,7 +45,7 @@ public class SecretariaController {
     }
 
     @PostMapping("/validarTurma/{turmaId}")
-    public ResponseEntity<String> validarTurma(@PathVariable String turmaId) {
+    public ResponseEntity<String> validarTurma(@PathVariable Long turmaId) {
         return secretariaService.validarTurma(turmaId);
     }
 
