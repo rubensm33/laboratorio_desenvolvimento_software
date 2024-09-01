@@ -39,4 +39,12 @@ public class Disciplina {
 
     @ManyToMany(mappedBy = "disciplinasInscritas")
     private List<Aluno> alunosInscritos;
+
+    @OneToMany(mappedBy = "disciplina")
+    private List<Turma> turmas;
+
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
+    private Professor professor;
+
 }

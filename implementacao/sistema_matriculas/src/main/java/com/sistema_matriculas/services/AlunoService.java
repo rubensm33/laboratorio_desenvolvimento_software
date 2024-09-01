@@ -16,9 +16,13 @@ import com.sistema_matriculas.bodys.DisciplinaResponse;
 import com.sistema_matriculas.model.Aluno;
 import com.sistema_matriculas.model.Curriculo;
 import com.sistema_matriculas.model.Disciplina;
+import com.sistema_matriculas.model.Turma;
 import com.sistema_matriculas.repository.AlunoRepository;
 import com.sistema_matriculas.repository.CurriculoRepository;
 import com.sistema_matriculas.repository.DisciplinaRepository;
+import com.sistema_matriculas.repository.TurmaRepository;
+import com.sistema_matriculas.utils.StatusTurma;
+import com.sistema_matriculas.utils.TipoDisciplina;
 
 @Service
 public class AlunoService {
@@ -29,18 +33,20 @@ public class AlunoService {
     private CurriculoRepository curriculoRepository;
     @Autowired
     private DisciplinaRepository disciplinaRepository;
+    @Autowired
+    private TurmaRepository turmaRepository;
 
     public List<AlunoResponse> getAllAlunos() {
         List<Aluno> allAlunos = alunoRepository.findAll();
         List<AlunoResponse> alunoResponses = new ArrayList<>();
         for (Aluno aluno : allAlunos) {
-            alunoResponses.add(toAlunoResponse(aluno));
+            alunoResponses.add(AlunoResponse.toAlunoResponse(aluno));
         }
         return alunoResponses;
     }
 
     @Transactional
-    public ResponseEntity<AlunoResponse> inscreverEmDisciplinaPorNome(String matriculaAluno, String nomeDisciplina) {
+    public ResponseEntity<?> inscreverEmDisciplinaPorNome(String matriculaAluno, String nomeDisciplina) {
         LocalDate today = LocalDate.now();
         int year = today.getYear();
         int semester = today.getMonthValue() > 6 ? 2 : 1;
@@ -58,33 +64,47 @@ public class AlunoService {
             return ResponseEntity.badRequest().build();
         }
 
-        if (disciplina.get().getAlunosInscritos().size() >= disciplina.get().getMaxAlunos()) {
-            return ResponseEntity.badRequest().build();
-        }
-
         Optional<Aluno> aluno = alunoRepository.findById(matriculaAluno);
-        if (aluno.isPresent()) {
-            disciplina.get().getAlunosInscritos().add(aluno.get());
-            aluno.get().getDisciplinasInscritas().add(disciplina.get());
-            alunoRepository.save(aluno.get());
-            disciplinaRepository.save(disciplina.get());
-
-            AlunoResponse alunoResponse = toAlunoResponse(aluno.get());
-            return ResponseEntity.ok(alunoResponse);
-        } else {
+        if (aluno.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
+
+        long countObrigatorias = aluno.get().getDisciplinasInscritas().stream()
+                .filter(d -> d.getTipoDisciplina() == TipoDisciplina.OBRIGATORIA)
+                .count();
+        long countOptativas = aluno.get().getDisciplinasInscritas().stream()
+                .filter(d -> d.getTipoDisciplina() == TipoDisciplina.OPTATIVA)
+                .count();
+
+        if (disciplina.get().getTipoDisciplina() == TipoDisciplina.OBRIGATORIA && countObrigatorias >= 4 ||
+                disciplina.get().getTipoDisciplina() == TipoDisciplina.OPTATIVA && countOptativas >= 2) {
+            return ResponseEntity.badRequest().body("Limite de disciplinas " +
+                    (disciplina.get().getTipoDisciplina() == TipoDisciplina.OBRIGATORIA ? "obrigatórias" : "optativas")
+                    +
+                    " atingido.");
+        }
+
+        Turma turma = turmaRepository.findByDisciplinaIdAndAnoAndSemestre(disciplina.get().getId(), year, semester)
+                .orElseGet(() -> {
+                    Turma newTurma = new Turma();
+                    newTurma.setDisciplina(disciplina.get());
+                    newTurma.setStatus(StatusTurma.PENDENTE);
+                    newTurma.setAno(year);
+                    newTurma.setSemestre(semester);
+                    newTurma.setProfessor(disciplina.get().getProfessor());
+                    return turmaRepository.save(newTurma);
+                });
+
+        if (!turma.getAlunos().contains(aluno.get())) {
+            turma.getAlunos().add(aluno.get());
+            turmaRepository.save(turma);
+        }
+
+        aluno.get().getDisciplinasInscritas().add(disciplina.get());
+        alunoRepository.save(aluno.get());
+
+        AlunoResponse alunoResponse = AlunoResponse.toAlunoResponse(aluno.get());
+        return ResponseEntity.ok(alunoResponse);
     }
 
-    private AlunoResponse toAlunoResponse(Aluno aluno) {
-        List<DisciplinaResponse> disciplinaResponses = DisciplinaResponse
-                .toDisciplinaResponse(aluno.getDisciplinasInscritas());
-
-        System.out.println(disciplinaResponses);
-        return new AlunoResponse(
-                aluno.getMatricula(),
-                aluno.getNome(),
-                aluno.getSenha(),
-                disciplinaResponses);
-    }
 }
