@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors; // Importação correta para Collectors
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sistema_matriculas.bodys.AlunoResponse;
-import com.sistema_matriculas.bodys.DisciplinaResponse;
 import com.sistema_matriculas.model.Aluno;
 import com.sistema_matriculas.model.Curriculo;
 import com.sistema_matriculas.model.Disciplina;
 import com.sistema_matriculas.model.Turma;
 import com.sistema_matriculas.repository.AlunoRepository;
 import com.sistema_matriculas.repository.CurriculoRepository;
-import com.sistema_matriculas.repository.DisciplinaRepository;
 import com.sistema_matriculas.repository.TurmaRepository;
 import com.sistema_matriculas.utils.StatusTurma;
 import com.sistema_matriculas.utils.TipoDisciplina;
@@ -29,10 +26,10 @@ public class AlunoService {
 
     @Autowired
     private AlunoRepository alunoRepository;
+
     @Autowired
     private CurriculoRepository curriculoRepository;
-    @Autowired
-    private DisciplinaRepository disciplinaRepository;
+
     @Autowired
     private TurmaRepository turmaRepository;
 
@@ -106,5 +103,4 @@ public class AlunoService {
         AlunoResponse alunoResponse = AlunoResponse.toAlunoResponse(aluno.get());
         return ResponseEntity.ok(alunoResponse);
     }
-
 }
