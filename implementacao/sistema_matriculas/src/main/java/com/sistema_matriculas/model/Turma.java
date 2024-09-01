@@ -4,6 +4,8 @@ import lombok.Data;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import com.sistema_matriculas.utils.StatusTurma;
 
 @Data
@@ -39,4 +41,41 @@ public class Turma {
 
     @Column(name = "semestre")
     private Integer semestre;
+
+    // Construtor com parâmetros
+    public Turma(Disciplina disciplina, Professor professor, StatusTurma status, Integer ano, Integer semestre) {
+        this.disciplina = disciplina;
+        this.professor = professor;
+        this.status = status;
+        this.ano = ano;
+        this.semestre = semestre;
+    }
+
+    // Métodos equals e hashCode para comparar instâncias da classe
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Turma turma = (Turma) o;
+        return Objects.equals(id, turma.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    // Método toString para representação em String
+    @Override
+    public String toString() {
+        return "Turma{" +
+                "id=" + id +
+                ", disciplina=" + disciplina +
+                ", professor=" + professor +
+                ", status=" + status +
+                ", ano=" + ano +
+                ", semestre=" + semestre +
+                '}';
+    }
 }
+

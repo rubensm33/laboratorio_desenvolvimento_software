@@ -1,14 +1,10 @@
 package com.sistema_matriculas.model;
 
 import lombok.Data;
-
-import java.util.Date;
 import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sistema_matriculas.utils.TipoDisciplina;
-
 import jakarta.persistence.*;
 
 @Data
@@ -47,4 +43,31 @@ public class Disciplina {
     @JoinColumn(name = "professor_id")
     private Professor professor;
 
+    @ManyToOne
+    @JoinColumn(name = "curso_id")
+    private Curso curso; // Adicionando a associação com Curso
+    // Método para adicionar um aluno à disciplina
+    public void adicionarAluno(Aluno aluno) {
+        this.alunosInscritos.add(aluno);
+        aluno.getDisciplinasInscritas().add(this);
+    }
+
+    // Método para remover um aluno da disciplina
+    public void removerAluno(Aluno aluno) {
+        this.alunosInscritos.remove(aluno);
+        aluno.getDisciplinasInscritas().remove(this);
+    }
+
+    // Método para adicionar uma turma à disciplina
+    public void adicionarTurma(Turma turma) {
+        this.turmas.add(turma);
+        turma.setDisciplina(this);
+    }
+
+    // Método para remover uma turma da disciplina
+    public void removerTurma(Turma turma) {
+        this.turmas.remove(turma);
+        turma.setDisciplina(null);
+    }
 }
+
