@@ -3,7 +3,7 @@ package com.sistema_matriculas.services;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import org.hibernate.mapping.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +50,8 @@ public class SecretariaService {
         if (existingCurriculo.isPresent()) {
             return existingCurriculo.get();
         } else {
-            Curriculo newCurriculo = new Curriculo();
+            Curriculo newCurriculo = new Curriculo(year, semester);
+
             newCurriculo.setAno(year);
             newCurriculo.setSemestre(semester);
             return curriculoRepository.save(newCurriculo);
@@ -82,12 +83,14 @@ public class SecretariaService {
     }
 
     @Transactional
-    public Disciplina associarProfessorADisciplina(String professorMatricula, String disciplinaId) {
+    public Disciplina associarProfessorADisciplina(String professorMatricula, Long disciplinaId) {
+
         Professor professor = professorRepository.findById(professorMatricula)
                 .orElseThrow(() -> new RuntimeException("Professor não encontrado"));
 
-        Disciplina disciplina = disciplinaRepository.findById(disciplinaId)
+                Disciplina disciplina = disciplinaRepository.findById(disciplinaId.toString())
                 .orElseThrow(() -> new RuntimeException("Disciplina não encontrada"));
+        
 
         LocalDate today = LocalDate.now();
         int year = today.getYear();
@@ -149,7 +152,8 @@ public class SecretariaService {
 
     @Transactional
     public Aluno matricularAlunoUniversidade(String nome, String senha) {
-        Aluno novoAluno = new Aluno();
+        Aluno novoAluno = new Aluno(nome, senha);
+
         novoAluno.setNome(nome);
         novoAluno.setSenha(senha);
         return alunoRepository.save(novoAluno);

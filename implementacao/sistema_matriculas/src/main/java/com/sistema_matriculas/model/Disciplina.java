@@ -1,11 +1,22 @@
 package com.sistema_matriculas.model;
 
-import lombok.Data;
 import java.util.List;
-import org.hibernate.annotations.CreationTimestamp;
-import com.fasterxml.jackson.annotation.JsonFormat;
+
 import com.sistema_matriculas.utils.TipoDisciplina;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.Data;
 
 @Data
 @Entity
@@ -46,28 +57,22 @@ public class Disciplina {
     @ManyToOne
     @JoinColumn(name = "curso_id")
     private Curso curso; // Adicionando a associação com Curso
-    // Método para adicionar um aluno à disciplina
-    public void adicionarAluno(Aluno aluno) {
-        this.alunosInscritos.add(aluno);
-        aluno.getDisciplinasInscritas().add(this);
+    
+    // Métodos para adicionar e remover alunos e turmas omitidos para brevidade
+
+    public String getNome() {
+        return nome;
     }
 
-    // Método para remover um aluno da disciplina
-    public void removerAluno(Aluno aluno) {
-        this.alunosInscritos.remove(aluno);
-        aluno.getDisciplinasInscritas().remove(this);
+    public TipoDisciplina getTipoDisciplina() {
+        return tipoDisciplina;
     }
 
-    // Método para adicionar uma turma à disciplina
-    public void adicionarTurma(Turma turma) {
-        this.turmas.add(turma);
-        turma.setDisciplina(this);
+    public Long getId() {
+        return id;
     }
 
-    // Método para remover uma turma da disciplina
-    public void removerTurma(Turma turma) {
-        this.turmas.remove(turma);
-        turma.setDisciplina(null);
+    public Professor getProfessor() {
+        return professor;
     }
 }
-

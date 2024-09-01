@@ -1,12 +1,24 @@
 package com.sistema_matriculas.model;
 
-import lombok.Data;
-import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import com.sistema_matriculas.utils.StatusTurma;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.Data;
 
 @Data
 @Entity
@@ -42,13 +54,31 @@ public class Turma {
     @Column(name = "semestre")
     private Integer semestre;
 
+    // Construtor sem parâmetros
+    public Turma() {
+        // Construtor padrão sem inicializações
+    }
+
     // Construtor com parâmetros
-    public Turma(Disciplina disciplina, Professor professor, StatusTurma status, Integer ano, Integer semestre) {
+    public Turma(Disciplina disciplina, Professor professor, StatusTurma status, int ano, int semestre) {
         this.disciplina = disciplina;
         this.professor = professor;
         this.status = status;
         this.ano = ano;
         this.semestre = semestre;
+    }
+
+    // Métodos setters corrigidos
+    public void setSemestre(int semestre) {
+        this.semestre = semestre;
+    }
+
+    public void setDisciplina(Disciplina disciplina) {
+        this.disciplina = disciplina;
+    }
+
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
     }
 
     // Métodos equals e hashCode para comparar instâncias da classe
@@ -78,4 +108,3 @@ public class Turma {
                 '}';
     }
 }
-

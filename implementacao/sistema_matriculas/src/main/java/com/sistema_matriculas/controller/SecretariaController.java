@@ -1,5 +1,14 @@
 package com.sistema_matriculas.controller;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.sistema_matriculas.model.Curriculo;
 import com.sistema_matriculas.model.Disciplina;
 import com.sistema_matriculas.model.Professor;
@@ -8,15 +17,6 @@ import com.sistema_matriculas.utils.TipoDisciplina;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @Tag(name = "Secretaria", description = "Operações relacionadas a secretaria")
@@ -61,15 +61,19 @@ public class SecretariaController {
     }
 
     @PutMapping("/associarProfessor")
-    public ResponseEntity<Disciplina> associarProfessorADisciplina(
-            @RequestParam String professorMatricula,
-            @RequestParam String disciplinaId) throws IllegalStateException {
-        try {
-            Disciplina disciplina = secretariaService.associarProfessorADisciplina(professorMatricula, disciplinaId);
-            return ResponseEntity.ok(disciplina);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+public ResponseEntity<Disciplina> associarProfessorADisciplina(
+        @RequestParam String professorMatricula,
+        @RequestParam String disciplinaIdString) {
+    try {
+        // Chama o método com disciplinaId convertido diretamente
+        Disciplina disciplina = secretariaService.associarProfessorADisciplina(professorMatricula, Long.parseLong(disciplinaIdString));
+        return ResponseEntity.ok(disciplina);
+    } catch (NumberFormatException e) {
+        // Trata o caso em que disciplinaIdString não pode ser convertido para Long
+        return ResponseEntity.badRequest().body(null);
+    } catch (RuntimeException e) {
+        return ResponseEntity.badRequest().body(null);
     }
+}
 
 }
