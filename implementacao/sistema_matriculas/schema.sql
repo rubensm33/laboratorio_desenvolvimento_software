@@ -44,17 +44,17 @@ CREATE TABLE turma_aluno (
     FOREIGN KEY (aluno_matricula) REFERENCES aluno(matricula)
 );
 
-CREATE TABLE curriculum (
+CREATE TABLE curriculo (
     id INT PRIMARY KEY,
     ano INT,
     semestre INT
 );
 
-CREATE TABLE curriculum_disciplina (
-    curriculum_id INT,
+CREATE TABLE curriculo_disciplina (
+    curriculo_id INT,
     disciplina_id INT,
-    PRIMARY KEY (curriculum_id, disciplina_id),
-    FOREIGN KEY (curriculum_id) REFERENCES curriculum(id),
+    PRIMARY KEY (curriculo_id, disciplina_id),
+    FOREIGN KEY (curriculo_id) REFERENCES curriculo(id),
     FOREIGN KEY (disciplina_id) REFERENCES disciplina(_id)
 );
 
@@ -86,10 +86,10 @@ INSERT INTO aluno (matricula, nome, senha) VALUES (2, 'Joao Lezsi', 'aluno456');
 INSERT INTO turma_aluno (turma_id, aluno_matricula) VALUES (1, 1);
 INSERT INTO turma_aluno (turma_id, aluno_matricula) VALUES (2, 2);
 
-INSERT INTO curriculum (id, ano, semestre) VALUES (1, 2024, 2);
+INSERT INTO curriculo (_id, ano, semestre) VALUES (1, 2024, 2);
 
-INSERT INTO curriculum_disciplina (curriculum_id, disciplina_id) VALUES (1, 1);
-INSERT INTO curriculum_disciplina (curriculum_id, disciplina_id) VALUES (1, 2);
+INSERT INTO curriculo_disciplina (curriculo_id, disciplina_id) VALUES (1, 1);
+INSERT INTO curriculo_disciplina (curriculo_id, disciplina_id) VALUES (1, 2);
 
-INSERT INTO aluno_disciplina (aluno_matricula, disciplina_id) VALUES (1, 1);
-INSERT INTO aluno_disciplina (aluno_matricula, disciplina_id) VALUES (2, 2);
+INSERT INTO aluno_disciplina (aluno_matricula, disciplina__id) VALUES (1, 1);
+INSERT INTO aluno_disciplina (aluno_matricula, disciplina__id) VALUES (2, 2);
