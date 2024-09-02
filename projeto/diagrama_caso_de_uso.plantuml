@@ -1,34 +1,69 @@
 @startuml
-left to right direction
+package "com.matriculas.services" {
 
-actor "Aluno" as Aluno
-actor "Professor" as Professor
-actor "Secretaria" as Secretaria
+    class Disciplina {
+        - String nome
+        - Integer creditos
+        - Integer maximoAlunos = 60
+        - Integer minimoAlunos = 3
+        - TipoDisciplina tipoDisciplina
+        + verificarStatus()
+        + cancelarDisciplina()
+    }
 
-rectangle "Sistema de Matrículas" {
-    usecase "Efetuar Matrícula" as EfetuarMatricula
-    usecase "Cancelar Matrícula" as CancelarMatricula
-    usecase "Consultar Disciplinas" as ConsultarDisciplinas
-    usecase "Gerar Currículo" as GerarCurriculo
-    usecase "Manter Disciplinas" as ManterDisciplinas
-    usecase "Manter Professores" as ManterProfessores
-    usecase "Manter Alunos" as ManterAlunos
-    usecase "Notificar Sistema de Cobranças" as NotificarSistemaDeCobrancas
-    usecase "Consultar Alunos Matriculados" as ConsultarAlunosMatriculados
+    class TurmaOfertada {
+        - Disciplina disciplina
+        - Professor professor
+        - ArrayList<Aluno> alunosInscritos
+        - Status status
+        + verificarStatus(): Status
+        + adicionarAluno(Aluno aluno)
+        + removerAluno(Aluno aluno)
+        + encerrarTurma()
+    }
+    
+    class Usuario {
+        - String nome
+        - String login
+        - String senha
+    }
+
+    class Aluno extends Usuario {
+        - String matricula
+        - ArrayList<Disciplina> disciplinasInscritas
+        + matricularDisciplina(Disciplina disciplina)
+        + cancelarDisciplina(Disciplina disciplina)
+        + consultarDisciplina(Disciplina disciplina)
+        + pagarCobranca()
+    }
+
+    class Professor extends Usuario {
+        - String matricula
+        - ArrayList<Disciplina> disciplinasLecionadas
+        + consultarAlunosMatriculados(): ArrayList<Aluno>
+    }
+
+    class Secretaria extends Usuario {
+        + criarCurriculo()
+        + adicionarDisciplinaAoCurriculo()
+        + associarProfessorADisciplina()
+        + validarTurma()
+        + validarTodasTurmas()
+        + criarProfessor()
+        + matricularAlunoUniversidade()
+    }
+
+    enum TipoDisciplina {
+        OBRIGATORIA, OPTATIVA
+    }
+
+    enum Status {
+        ATIVA, INATIVA, ENCERRADA, CONCLUIDA
+    }
+
+    TurmaOfertada "1" --> "1" Disciplina
+    TurmaOfertada "1" --> "1" Professor
+    TurmaOfertada "0..*" --> "0..*" Aluno : inscritos
+
 }
-
-Aluno --> EfetuarMatricula
-Aluno --> ConsultarDisciplinas
-
-Professor --> ConsultarAlunosMatriculados
-
-Secretaria --> GerarCurriculo
-Secretaria --> ManterDisciplinas
-Secretaria --> ManterProfessores
-Secretaria --> ManterAlunos
-
-EfetuarMatricula --> NotificarSistemaDeCobrancas : <<extend>>
-
-ConsultarDisciplinas -down-> CancelarMatricula : <<include>>
-
 @enduml
