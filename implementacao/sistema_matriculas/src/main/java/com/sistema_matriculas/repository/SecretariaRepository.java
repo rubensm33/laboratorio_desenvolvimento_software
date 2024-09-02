@@ -5,4 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface Secretariaepository extends JpaRepository<Secretaria, String> {}
+public interface SecretariaRepository extends JpaRepository<Secretaria, String> {}

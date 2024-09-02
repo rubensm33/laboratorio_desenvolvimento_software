@@ -19,7 +19,7 @@ public class Disciplina {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "_id")
-    private String id;
+    private Long id;
 
     @Column(name = "nome", nullable = false)
     private String nome;
@@ -40,11 +40,11 @@ public class Disciplina {
     @ManyToMany(mappedBy = "disciplinasInscritas")
     private List<Aluno> alunosInscritos;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "professor_disciplina",
-        joinColumns = @JoinColumn(name = "disciplina_id", referencedColumnName = "_id"),
-        inverseJoinColumns = @JoinColumn(name = "professor_matricula", referencedColumnName = "matricula")
-    )
-    private List<Professor> professores;
+    @OneToMany(mappedBy = "disciplina")
+    private List<Turma> turmas;
+
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
+    private Professor professor;
+
 }

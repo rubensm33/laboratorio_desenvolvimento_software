@@ -7,7 +7,18 @@ import jakarta.persistence.*;
 @Data
 @Entity
 @Table(name = "aluno")
-public class Aluno extends Usuario {
+public class Aluno {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "matricula")
+    private Long matricula;
+
+    @Column(name = "nome", nullable = false)
+    private String nome;
+
+    @Column(name = "senha", nullable = false)
+    private String senha;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

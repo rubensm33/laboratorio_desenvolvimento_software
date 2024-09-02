@@ -7,7 +7,7 @@ import com.sistema_matriculas.model.Disciplina;
 import com.sistema_matriculas.utils.TipoDisciplina;
 
 public record DisciplinaResponse(
-        String id,
+        Long id,
         String nome,
         Integer creditos,
         Integer maxAlunos,
